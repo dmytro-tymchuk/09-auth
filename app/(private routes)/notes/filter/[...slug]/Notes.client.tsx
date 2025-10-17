@@ -1,6 +1,6 @@
 "use client"
 
-import css from "../../../page.module.css"
+import css from "../../../../page.module.css"
 import { useState } from "react"
 import { useDebouncedCallback } from "use-debounce"
 import { keepPreviousData, useQuery } from "@tanstack/react-query"
