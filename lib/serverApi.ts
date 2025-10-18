@@ -1,9 +1,14 @@
 import { User } from "@/types/user"
 import { api } from "./api"
 import { cookies } from "next/headers"
-import { NoteResponse } from "./clientApi"
+import { NoteResponse, SessionResponse } from "./clientApi"
 import { Note } from "@/types/note"
-export { getServerMe, fetchServerNotes, fetchServerNoteById }
+export {
+  getServerMe,
+  fetchServerNotes,
+  fetchServerNoteById,
+  checkServerSession
+}
 
 const getServerMe = async () => {
   const cookieStore = await cookies()
@@ -41,4 +46,14 @@ const fetchServerNoteById = async (id: string): Promise<Note> => {
     }
   })
   return res.data
+}
+
+const checkServerSession = async () => {
+  const cookieStore = await cookies()
+  const res = await api.get<SessionResponse>(`/auth/session`, {
+    headers: {
+      Cookie: cookieStore.toString()
+    }
+  })
+  return res
 }
