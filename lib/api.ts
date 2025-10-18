@@ -4,8 +4,6 @@ import { User } from "@/types/user"
 
 export { fetchNotes, createNote, deleteNote, fetchNoteById, register, login }
 
-// axios.defaults.baseURL = "http://localhost:3000/api"
-
 export const api = axios.create({
   baseURL: (process.env.NEXT_PUBLIC_API_URL ?? "") + "/api",
   withCredentials: true
