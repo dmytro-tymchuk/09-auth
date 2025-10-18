@@ -2,7 +2,16 @@ import axios from "axios"
 import type { CreateNoteRequest, Note } from "../types/note"
 import { User } from "@/types/user"
 
-export { fetchNotes, createNote, deleteNote, fetchNoteById, register, login }
+export {
+  fetchNotes,
+  createNote,
+  deleteNote,
+  fetchNoteById,
+  register,
+  login,
+  checkSession,
+  getMe
+}
 
 export const api = axios.create({
   baseURL: (process.env.NEXT_PUBLIC_API_URL ?? "") + "/api",
@@ -26,6 +35,10 @@ export interface RegisterRequest {
 export interface LoginRequest {
   email: string
   password: string
+}
+
+export interface SessionResponse {
+  success: boolean
 }
 
 const fetchNotes = async (
@@ -81,5 +94,15 @@ const register = async (body: RegisterRequest) => {
 
 const login = async (body: LoginRequest) => {
   const { data } = await api.post<User>(`/auth/login`, body)
+  return data
+}
+
+const checkSession = async () => {
+  const { data } = await api.get<SessionResponse>(`/auth/session`)
+  return data.success
+}
+
+const getMe = async () => {
+  const { data } = await api.get<User>(`/users/me`)
   return data
 }
