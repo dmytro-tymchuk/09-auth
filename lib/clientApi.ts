@@ -11,7 +11,8 @@ export {
   login,
   checkSession,
   getMe,
-  logout
+  logout,
+  updateMe
 }
 
 export type NoteResponse = {
@@ -105,4 +106,9 @@ const getMe = async () => {
 
 const logout = async () => {
   await api.post(`/auth/logout`)
+}
+
+const updateMe = async (payload: { email: string; username: string }) => {
+  const { data } = await api.patch<User>("/users/me", payload)
+  return data
 }

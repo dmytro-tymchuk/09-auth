@@ -1,6 +1,7 @@
 import { getServerMe } from "@/lib/serverApi"
 import css from "./ProfilePage.module.css"
 import { Metadata } from "next"
+import Link from "next/link"
 
 export const metadata: Metadata = {
   title: "Profile - NoteHub",
@@ -28,7 +29,9 @@ const Profile = async () => {
       <div className={css.profileCard}>
         <div className={css.header}>
           <h1 className={css.formTitle}>Profile Page</h1>
-          <a className={css.editProfileButton}>Edit Profile</a>
+          <Link href="/profile/edit" className={css.editProfileButton}>
+            Edit Profile
+          </Link>
         </div>
         <div className={css.avatarWrapper}>
           <img
