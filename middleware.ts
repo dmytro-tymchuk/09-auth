@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { checkServerSession } from "./lib/serverApi"
 import { parse } from "cookie"
 
-const privateRoutes = ["/profile"]
+const privateRoutes = ["/profile", "/notes"]
 const publicRoutes = ["/sign-in", "/sign-up"]
 
 export const middleware = async (request: NextRequest) => {
@@ -89,5 +89,5 @@ export const middleware = async (request: NextRequest) => {
 }
 
 export const config = {
-  matcher: ["/profile", "/sign-in", "/sing-up"]
+  matcher: ["/profile", "/sign-in", "/sing-up", "/notes"]
 }

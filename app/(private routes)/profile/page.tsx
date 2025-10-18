@@ -1,6 +1,24 @@
 import { getServerMe } from "@/lib/serverApi"
 import css from "./ProfilePage.module.css"
+import { Metadata } from "next"
 
+export const metadata: Metadata = {
+  title: "Profile - NoteHub",
+  description: "User profile page for managing your NoteHub account",
+  openGraph: {
+    title: "NoteHub Profile",
+    description: "View and edit your NoteHub user information.",
+    url: ``,
+    images: [
+      {
+        url: `https://ac.goit.global/fullstack/react/notehub-og-meta.jpg`,
+        width: 1200,
+        height: 630,
+        alt: "Create Next App"
+      }
+    ]
+  }
+}
 const Profile = async () => {
   const user = await getServerMe()
   console.log(user)
