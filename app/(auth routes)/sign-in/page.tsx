@@ -1,5 +1,5 @@
 "use client"
-import { LoginRequest, login } from "@/lib/clientApi"
+import { LoginRequest, login } from "@/lib/api/clientApi"
 import css from "./SignInPage.module.css"
 import { useAuth } from "@/lib/store/authStore"
 import { useRouter } from "next/navigation"

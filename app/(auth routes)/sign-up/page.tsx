@@ -1,5 +1,5 @@
 "use client"
-import { RegisterRequest, register } from "@/lib/clientApi"
+import { RegisterRequest, register } from "@/lib/api/clientApi"
 import css from "./SignUpPage.module.css"
 import { useAuth } from "@/lib/store/authStore"
 import { useRouter } from "next/navigation"

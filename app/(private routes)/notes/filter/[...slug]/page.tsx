@@ -6,7 +6,7 @@ import {
 import NotesClient from "./Notes.client"
 import css from "../../../../page.module.css"
 import { Metadata } from "next"
-import { fetchServerNotes } from "@/lib/serverApi"
+import { fetchServerNotes } from "@/lib/api/serverApi"
 
 type PageProps = {
   params: Promise<{ slug: string[] }>

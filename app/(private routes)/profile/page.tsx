@@ -1,4 +1,4 @@
-import { getServerMe } from "@/lib/serverApi"
+import { getServerMe } from "@/lib/api/serverApi"
 import css from "./ProfilePage.module.css"
 import { Metadata } from "next"
 import Link from "next/link"

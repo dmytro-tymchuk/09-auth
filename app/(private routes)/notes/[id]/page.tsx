@@ -5,7 +5,7 @@ import {
   dehydrate
 } from "@tanstack/react-query"
 import { Metadata } from "next"
-import { fetchServerNoteById } from "@/lib/serverApi"
+import { fetchServerNoteById } from "@/lib/api/serverApi"
 interface DetailsProps {
   params: Promise<{ id: string }>
 }

@@ -2,7 +2,7 @@
 import { useAuth } from "@/lib/store/authStore"
 import css from "./EditProfilePage.module.css"
 import Image from "next/image"
-import { updateMe } from "@/lib/clientApi"
+import { updateMe } from "@/lib/api/clientApi"
 import { useRouter } from "next/navigation"
 
 const EditProfilePage = () => {

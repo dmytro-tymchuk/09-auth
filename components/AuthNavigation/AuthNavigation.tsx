@@ -2,7 +2,7 @@
 import Link from "next/link"
 import css from "./AuthNavigation.module.css"
 import { useAuth } from "@/lib/store/authStore"
-import { logout } from "@/lib/clientApi"
+import { logout } from "@/lib/api/clientApi"
 import { useRouter } from "next/navigation"
 import TagsMenu from "../TagsMenu/TagsMenu"
 
