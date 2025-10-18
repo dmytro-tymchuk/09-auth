@@ -1,9 +1,10 @@
-"use client"
-import { useAuth } from "@/lib/store/authStore"
+import { getServerMe } from "@/lib/serverApi"
 import css from "./ProfilePage.module.css"
 
-const Profile = () => {
-  const { user } = useAuth()
+const Profile = async () => {
+  const user = await getServerMe()
+  console.log(user)
+
   return (
     <main className={css.mainContent}>
       <div className={css.profileCard}>

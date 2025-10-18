@@ -2,10 +2,17 @@
 import Link from "next/link"
 import css from "./AuthNavigation.module.css"
 import { useAuth } from "@/lib/store/authStore"
+import { logout } from "@/lib/clientApi"
+import { useRouter } from "next/navigation"
 
 const AuthNavigation = () => {
-  const { user, isAuth } = useAuth()
-  const handleClick = () => {}
+  const { user, isAuth, clearAuth } = useAuth()
+  const router = useRouter()
+  const handleClick = async () => {
+    await logout()
+    clearAuth()
+    router.replace("/sign-in")
+  }
   return isAuth ? (
     <>
       <li className={css.navigationItem}>

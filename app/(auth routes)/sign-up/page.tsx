@@ -1,11 +1,16 @@
 "use client"
-import { RegisterRequest, register } from "@/lib/api"
+import { RegisterRequest, register } from "@/lib/clientApi"
 import css from "./SignUpPage.module.css"
+import { useAuth } from "@/lib/store/authStore"
+import { useRouter } from "next/navigation"
 const SignUpPage = () => {
+  const { setUser } = useAuth()
+  const router = useRouter()
   const handleAction = async (formData: FormData) => {
     const payload = Object.fromEntries(formData) as unknown as RegisterRequest
     const user = await register(payload)
-    console.log("user", user)
+    setUser(user)
+    router.replace("/profile")
   }
   return (
     <main className={css.mainContent}>

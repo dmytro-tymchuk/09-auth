@@ -1,11 +1,16 @@
 "use client"
-import { LoginRequest, login } from "@/lib/api"
+import { LoginRequest, login } from "@/lib/clientApi"
 import css from "./SignInPage.module.css"
+import { useAuth } from "@/lib/store/authStore"
+import { useRouter } from "next/navigation"
 const SignInPage = () => {
+  const { setUser } = useAuth()
+  const router = useRouter()
   const handleAction = async (formData: FormData) => {
     const payload = Object.fromEntries(formData) as unknown as LoginRequest
     const user = await login(payload)
-    console.log("user", user)
+    setUser(user)
+    router.replace("/profile")
   }
 
   return (
