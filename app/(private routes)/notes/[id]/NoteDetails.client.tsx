@@ -8,7 +8,7 @@ import { useParams } from "next/navigation"
 const NoteDetailsClient = () => {
   const { id } = useParams<{ id: string }>()
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["task", id],
+    queryKey: ["note", id],
     queryFn: () => fetchNoteById(id),
     refetchOnMount: false
   })

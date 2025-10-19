@@ -108,7 +108,7 @@ const logout = async () => {
   await api.post(`/auth/logout`)
 }
 
-const updateMe = async (payload: { email: string; username: string }) => {
+const updateMe = async (payload: { username: string }) => {
   const { data } = await api.patch<User>("/users/me", payload)
   return data
 }

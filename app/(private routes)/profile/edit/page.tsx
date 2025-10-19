@@ -13,9 +13,8 @@ const EditProfilePage = () => {
     event.preventDefault()
     const form = new FormData(event.currentTarget)
     const username = String(form.get("username")).trim()
-    const email = String(form.get("email") || user?.email)
 
-    const updatedUser = await updateMe({ email, username })
+    const updatedUser = await updateMe({ username })
 
     setUser(updatedUser)
     router.replace("/profile")

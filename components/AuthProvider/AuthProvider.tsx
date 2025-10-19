@@ -13,8 +13,8 @@ const AuthProvider = ({ children }: Props) => {
   const clearAuth = useAuth((state) => state.clearAuth)
   useEffect(() => {
     const fetchAuth = async () => {
-      const isAuth = await checkSession()
-      if (isAuth) {
+      const isAuthenticated = await checkSession()
+      if (isAuthenticated) {
         const user = await getMe()
         if (user) {
           setUser(user)

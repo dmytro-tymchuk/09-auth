@@ -6,11 +6,14 @@ import { parse } from "cookie"
 const privateRoutes = ["/profile", "/notes"]
 const publicRoutes = ["/sign-in", "/sign-up"]
 
+const matchesPrefix = (pathname: string, prefix: string) =>
+  pathname === prefix || pathname.startsWith(prefix + "/")
+
 export const middleware = async (request: NextRequest) => {
   const { pathname } = request.nextUrl
 
-  const isPrivateRoute = privateRoutes.some((el) => el.startsWith(pathname))
-  const isPublicRoute = publicRoutes.some((el) => el.startsWith(pathname))
+  const isPrivateRoute = privateRoutes.some((el) => matchesPrefix(pathname, el))
+  const isPublicRoute = publicRoutes.some((el) => matchesPrefix(pathname, el))
 
   const cookieStore = await cookies()
   const accessToken = cookieStore.get("accessToken")?.value
@@ -18,30 +21,35 @@ export const middleware = async (request: NextRequest) => {
 
   if (isPrivateRoute) {
     if (accessToken) {
-      return NextResponse.next({ headers: { Cookie: cookieStore.toString() } })
+      return NextResponse.next()
     }
+
     if (refreshToken) {
       try {
         const apiRes = await checkServerSession()
         const setCookie = apiRes.headers["set-cookie"]
+
         if (setCookie) {
+          const res = NextResponse.next()
           const cookieArray = Array.isArray(setCookie) ? setCookie : [setCookie]
+
           for (const cookieStr of cookieArray) {
             const parsed = parse(cookieStr)
-            const options = {
+            const options: Parameters<typeof res.cookies.set>[2] = {
               expires: parsed.Expires ? new Date(parsed.Expires) : undefined,
               path: parsed.Path,
-              maxAge: Number(parsed["Max-Age"])
+              maxAge: parsed["Max-Age"] ? Number(parsed["Max-Age"]) : undefined
             }
+
             if (parsed.accessToken)
-              cookieStore.set("accessToken", parsed.accessToken, options)
+              res.cookies.set("accessToken", parsed.accessToken, options)
             if (parsed.refreshToken)
-              cookieStore.set("refreshToken", parsed.refreshToken, options)
+              res.cookies.set("refreshToken", parsed.refreshToken, options)
           }
-          return NextResponse.next({
-            headers: { Cookie: cookieStore.toString() }
-          })
+
+          return res
         }
+
         return NextResponse.redirect(
           new URL("/sign-in", request.nextUrl.origin)
         )
@@ -51,6 +59,7 @@ export const middleware = async (request: NextRequest) => {
         )
       }
     }
+
     return NextResponse.redirect(new URL("/sign-in", request.nextUrl.origin))
   }
 
@@ -58,26 +67,34 @@ export const middleware = async (request: NextRequest) => {
     if (accessToken) {
       return NextResponse.redirect(new URL("/", request.nextUrl.origin))
     }
+
     if (refreshToken) {
       try {
         const apiRes = await checkServerSession()
         const setCookie = apiRes.headers["set-cookie"]
+
         if (setCookie) {
+          const res = NextResponse.redirect(
+            new URL("/", request.nextUrl.origin)
+          )
           const cookieArray = Array.isArray(setCookie) ? setCookie : [setCookie]
+
           for (const cookieStr of cookieArray) {
             const parsed = parse(cookieStr)
-            const options = {
+            const options: Parameters<typeof res.cookies.set>[2] = {
               expires: parsed.Expires ? new Date(parsed.Expires) : undefined,
               path: parsed.Path,
-              maxAge: Number(parsed["Max-Age"])
+              maxAge: parsed["Max-Age"] ? Number(parsed["Max-Age"]) : undefined
             }
+
             if (parsed.accessToken)
-              cookieStore.set("accessToken", parsed.accessToken, options)
+              res.cookies.set("accessToken", parsed.accessToken, options)
             if (parsed.refreshToken)
-              cookieStore.set("refreshToken", parsed.refreshToken, options)
+              res.cookies.set("refreshToken", parsed.refreshToken, options)
           }
-          return NextResponse.redirect(new URL("/", request.nextUrl.origin))
+          return res
         }
+
         return NextResponse.next()
       } catch {
         return NextResponse.next()
@@ -85,9 +102,10 @@ export const middleware = async (request: NextRequest) => {
     }
     return NextResponse.next()
   }
+
   return NextResponse.next()
 }
 
 export const config = {
-  matcher: ["/profile", "/sign-in", "/sing-up", "/notes"]
+  matcher: ["/profile/:path*", "/notes/:path*", "/sign-in", "/sign-up"]
 }
