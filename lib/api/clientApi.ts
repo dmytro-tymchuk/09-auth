@@ -44,9 +44,6 @@ const fetchNotes = async (
   tag?: string
 ): Promise<NoteResponse> => {
   const res = await api.get<NoteResponse>(`/notes`, {
-    headers: {
-      Authorization: `Bearer ${process.env.NEXT_PUBLIC_NOTEHUB_TOKEN}`
-    },
     params: {
       page,
       perPage: 12,
@@ -58,29 +55,17 @@ const fetchNotes = async (
 }
 
 const createNote = async (data: CreateNoteRequest): Promise<Note> => {
-  const res = await api.post<SingleNoteResponse>(`/notes`, data, {
-    headers: {
-      Authorization: `Bearer ${process.env.NEXT_PUBLIC_NOTEHUB_TOKEN}`
-    }
-  })
+  const res = await api.post<SingleNoteResponse>(`/notes`, data)
   return res.data.note
 }
 
 const deleteNote = async (noteId: string) => {
-  const res = await api.delete<SingleNoteResponse>(`/notes/${noteId}`, {
-    headers: {
-      Authorization: `Bearer ${process.env.NEXT_PUBLIC_NOTEHUB_TOKEN}`
-    }
-  })
+  const res = await api.delete<SingleNoteResponse>(`/notes/${noteId}`)
   return res.data.note
 }
 
 const fetchNoteById = async (id: string): Promise<Note> => {
-  const res = await api.get<Note>(`/notes/${id}`, {
-    headers: {
-      Authorization: `Bearer ${process.env.NEXT_PUBLIC_NOTEHUB_TOKEN}`
-    }
-  })
+  const res = await api.get<Note>(`/notes/${id}`)
   return res.data
 }
 
